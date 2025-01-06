@@ -26,29 +26,30 @@ public class TodoController {
 
     @GetMapping("/")
     public ResponseEntity<List<TodoResponseDto>> getAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(todoService.getAll());
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TodoResponseDto> getById(@PathVariable(value = "id") Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(todoService.getById(id));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.getById(id));
     }
 
     @PutMapping("/{id}")
-    public TodoResponseDto update(@PathVariable(value = "id") Long id, @RequestBody TodoUpdateDto request){
-        return todoService.update(id, request);
+    public ResponseEntity<TodoResponseDto> update(@PathVariable(value = "id") Long id, @RequestBody TodoUpdateDto request){
+        return ResponseEntity.status(HttpStatus.OK).body(todoService.update(id, request));
     }
 
     @PatchMapping("/{id}")
-    public TodoResponseDto updateComplete(
+    public ResponseEntity<TodoResponseDto> updateComplete(
             @PathVariable(value = "id") Long id,
             @RequestParam boolean isCompleted
     ) {
-        return todoService.updateComplete(id, isCompleted);
+        return ResponseEntity.status(HttpStatus.OK).body(todoService.updateComplete(id, isCompleted));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable(value = "id") Long id){
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id){
         todoService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
