@@ -1,5 +1,6 @@
 package com.vhbchieu.todolist.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class TodoUpdateDto {
     @Size(max = 100)
     private String description;
     @NotNull
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date date;
     @NotNull
     private boolean completed;

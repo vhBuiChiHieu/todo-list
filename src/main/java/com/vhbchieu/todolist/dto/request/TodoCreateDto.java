@@ -1,5 +1,7 @@
 package com.vhbchieu.todolist.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.vhbchieu.todolist.config.NotPast;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
@@ -13,5 +15,8 @@ public class TodoCreateDto {
 
     @Size(max = 100)
     private String description;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @NotPast
     private Date date;
 }
