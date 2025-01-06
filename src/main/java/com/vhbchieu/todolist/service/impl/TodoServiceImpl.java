@@ -36,17 +36,13 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoResponseDto getById(Long id) {
-        Todo existTodo = todoRepos.findById(id).orElse(null);
-        if (existTodo == null)
-            throw new TodoException(404, "Không tìm thấy Todo id:" + id);
+        Todo existTodo = todoRepos.findById(id).orElseThrow(() -> new TodoException(404, "Không tìm thấy todo có id:" + id));
         return mapper.getDtoFrom(existTodo);
     }
 
     @Override
     public TodoResponseDto update(Long id, TodoUpdateDto request) {
-        Todo existedTodo = todoRepos.findById(id).orElse(null);
-        if (existedTodo == null)
-            throw new TodoException(404, "Todo with id: " + id + " not found.");
+        Todo existedTodo = todoRepos.findById(id).orElseThrow(() -> new TodoException(404, "Không tìm thấy todo có id:" + id));
 
         existedTodo.setTitle(request.getTitle());
         existedTodo.setDescription(request.getDescription());
@@ -60,9 +56,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoResponseDto updateComplete(Long id, boolean isCompleted) {
-        Todo existedTodo = todoRepos.findById(id).orElse(null);
-        if (existedTodo == null)
-            throw new TodoException(404, "Todo with id: " + id + " not found.");
+        Todo existedTodo = todoRepos.findById(id).orElseThrow(() -> new TodoException(404, "Không tìm thấy todo có id:" + id));
 
         existedTodo.setCompleted(isCompleted);
         todoRepos.save(existedTodo);
