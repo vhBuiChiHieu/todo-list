@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     ResponseEntity<ErrorResponse> handle(Exception e, HttpServletRequest request) {
-        log.error("Request id: {}, Exception: {}", request.getRequestId(), e.getMessage(), e);
+        log.error("Request id: {}, path: {}, Exception: {}", request.getRequestId(), request.getRequestURI(),e.getMessage(), e);
         ErrorResponse errorResponse = new ErrorResponse(request.getRequestId(), HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getRequestURI(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), "Lỗi Hệ Thống");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }

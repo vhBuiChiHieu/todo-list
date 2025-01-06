@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .todo-container {
+            width: 100%;
+            max-width: 400px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .todo-container h1 {
+            text-align: center;
+            color: #333;
+        }
+        .todo-input {
+            width: calc(100% - 50px);
+            padding: 10px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .add-btn {
+            padding: 10px;
+            border: none;
+            background-color: #5cb85c;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .add-btn:hover {
+            background-color: #4cae4c;
+        }
+        .todo-list {
+            margin-top: 20px;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .todo-item.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .complete-btn {
+            background-color: #5bc0de;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .complete-btn:hover {
+            background-color: #46b8da;
+        }
+        .delete-btn {
+            background-color: #d9534f;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-container">
+        <h1>To-Do List</h1>
+        <div>
+            <input type="text" id="todoInput" class="todo-input" placeholder="Add a new task">
+            <button id="addBtn" class="add-btn">Add</button>
+        </div>
+        <ul id="todoList" class="todo-list">
+            <!-- List items will appear here -->
+        </ul>
+    </div>
+
+    <script>
+        const todoList = document.getElementById('todoList');
+        const todoInput = document.getElementById('todoInput');
+        const addBtn = document.getElementById('addBtn');
+
+        // Sample API data
+        const apiData = [
+            { id: 1, text: 'Learn JavaScript', completed: false },
+            { id: 2, text: 'Build a To-Do App', completed: true },
+        ];
+
+        // Render the initial list from the "API"
+        function renderList() {
+            todoList.innerHTML = '';
+            apiData.forEach(task => {
+                const li = document.createElement('li');
+                li.className = `todo-item ${task.completed ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <span>${task.text}</span>
+                    <div>
+                        <button class="complete-btn">${task.completed ? 'Undo' : 'Complete'}</button>
+                        <button class="delete-btn">Delete</button>
+                    </div>
+                `;
+
+                // Add event listeners to buttons
+                li.querySelector('.complete-btn').addEventListener('click', () => toggleComplete(task));
+                li.querySelector('.delete-btn').addEventListener('click', () => deleteTask(task));
+
+                todoList.appendChild(li);
+            });
+        }
+
+        // Add a new task
+        addBtn.addEventListener('click', () => {
+            const text = todoInput.value.trim();
+            if (text) {
+                apiData.push({ id: Date.now(), text, completed: false });
+                todoInput.value = '';
+                renderList();
+            }
+        });
+
+        // Toggle complete status
+        function toggleComplete(task) {
+            task.completed = !task.completed;
+            renderList();
+        }
+
+        // Delete a task
+        function deleteTask(task) {
+            const index = apiData.indexOf(task);
+            if (index > -1) {
+                apiData.splice(index, 1);
+                renderList();
+            }
+        }
+
+        // Initial render
+        renderList();
+    </script>
+</body>
+</html>
