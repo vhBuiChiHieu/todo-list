@@ -45,7 +45,6 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoResponseDto update(Long id, TodoUpdateDto request) {
         Todo existedTodo = todoRepos.findById(id).orElse(null);
-
         if (existedTodo == null)
             throw new TodoException(404, "Todo with id: " + id + " not found.");
 
@@ -57,5 +56,21 @@ public class TodoServiceImpl implements TodoService {
         todoRepos.save(existedTodo);
 
         return mapper.getDtoFrom(existedTodo);
+    }
+
+    @Override
+    public TodoResponseDto updateComplete(Long id, boolean isCompleted) {
+        Todo existedTodo = todoRepos.findById(id).orElse(null);
+        if (existedTodo == null)
+            throw new TodoException(404, "Todo with id: " + id + " not found.");
+
+        existedTodo.setCompleted(isCompleted);
+        todoRepos.save(existedTodo);
+        return mapper.getDtoFrom(existedTodo);
+    }
+
+    @Override
+    public void delete(Long id) {
+        todoRepos.deleteById(id);
     }
 }

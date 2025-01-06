@@ -38,4 +38,17 @@ public class TodoController {
     public TodoResponseDto update(@PathVariable(value = "id") Long id, @RequestBody TodoUpdateDto request){
         return todoService.update(id, request);
     }
+
+    @PatchMapping("/{id}")
+    public TodoResponseDto updateComplete(
+            @PathVariable(value = "id") Long id,
+            @RequestParam boolean isCompleted
+    ) {
+        return todoService.updateComplete(id, isCompleted);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable(value = "id") Long id){
+        todoService.delete(id);
+    }
 }
